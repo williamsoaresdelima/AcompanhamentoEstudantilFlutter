@@ -5,9 +5,9 @@ import '../models/Supplies.dart';
 class SuppliesProvider with ChangeNotifier{
   
   List<Supplies> supplies = [
-    Supplies(1, "Caneta", "Caneta Azul", 3.0, 
+    Supplies("1", "Caneta", "Caneta Azul", 3.0, 
     "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg", 2),
-    Supplies(2, "Caderno", "Caderno de 10 matérias", 15.0, 
+    Supplies("2", "Caderno", "Caderno de 10 matérias", 15.0, 
     "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg", 3)
   ];
   
