@@ -20,7 +20,7 @@ class SchoolList extends StatelessWidget {
     }
 
     return FutureBuilder(
-          future: SchoolService().list(),
+          future: provider.list(),
           builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting){
             return const Center(

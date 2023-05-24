@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 import '../models/School.dart';
 import '../models/Supplies.dart';
+import '../providers/school_provider.dart';
 import '../routes/route.dart';
 import '../services/school_service.dart';
 
@@ -31,20 +33,19 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    final provider = Provider.of<SchoolProvider>(context);
   School school = ModalRoute.of(context)?.settings.arguments as School;
 
-  void updateSchool(School school, supplie){
-      school.supplies.add(
-          Supplies("0", _name.text, "teste", double.parse(_price.text), _imageURL.text, int.parse(_quant.text)
-        ));
-      String teste = jsonEncode(school.toJson());
-      print("teste");
-      print(teste);
-      SchoolService().Update(school.id.toString(), teste);
-      Navigator.of(context).pushNamed(Routes.schoolListScreen);
-  }
+  void updateSchool(School school, supplie) {
 
+      school.supplies.add(
+          Supplies(1, _name.text, "teste", double.parse(_price.text), _imageURL.text, int.parse(_quant.text)
+        ));
+      provider.update(school);
+      // String teste = jsonEncode(school.toJson());
+      // SchoolService().Update(school.id.toString(), teste);
+      Navigator.of(context).pushNamed(Routes.schoolShowScreen, arguments: school);
+  }
 
     return Scaffold(
       appBar: AppBar(
@@ -92,7 +93,7 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
                 //   Supplies("0", _name.text, "teste", double.parse(_price.text), _imageURL.text, int.parse(_quant.text))
                 // );
                 updateSchool(school, 
-                Supplies("0", _name.text, "teste", double.parse(_price.text), _imageURL.text, int.parse(_quant.text)));
+                Supplies(0, _name.text, "teste", double.parse(_price.text), _imageURL.text, int.parse(_quant.text)));
                 // Navigator.of(context).pushNamed(Routes.suppliesListScreen);
               }, 
               child: const Text("Salvar")

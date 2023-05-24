@@ -1,28 +1,22 @@
+import 'dart:convert';
+
+import 'package:acompanhamento_estudantil/services/school_service.dart';
 import 'package:flutter/material.dart';
 
+import '../models/School.dart';
 import '../models/Supplies.dart';
+import '../routes/route.dart';
 
 class SuppliesProvider with ChangeNotifier{
-  
+  SuppliesProvider(this.supplies);
   List<Supplies> supplies = [
-    Supplies("1", "Caneta", "Caneta Azul", 3.0, 
-    "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg", 2),
-    Supplies("2", "Caderno", "Caderno de 10 matérias", 15.0, 
-    "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg", 3)
   ];
-  
+
 
     void addItem(Supplies supplies){
       supplies.quant++;
       notifyListeners();
-  }
-
-   void removeItem(Supplies supplies){
-    if(supplies.quant > 0){
-          supplies.quant--;
-           notifyListeners();
     }
-  }
 
   
   String countItens() => supplies.fold(0 , (acc, p) => acc + p.quant).toString();

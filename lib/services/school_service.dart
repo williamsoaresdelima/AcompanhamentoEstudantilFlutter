@@ -30,4 +30,27 @@ class SchoolService {
       throw Exception("Problemas ao consultar lista.");
     }
   }
+
+  Future<List<School>> insert(School school) async {
+    try {
+      String json = jsonEncode(school.toJson());
+      Response response = await _schoolRepository.insert(json);
+      return jsonDecode(response.body);
+    }
+    catch(err) {
+      print(err);
+      throw Exception("Problemas ao consultar lista.");
+    }
+  }
+
+  Future<List<School>> delete(String Id) async {
+    try {
+      Response response = await _schoolRepository.delete(Id);
+      return jsonDecode(response.body);
+    }
+    catch(err) {
+      print(err);
+      throw Exception("Problemas ao consultar lista.");
+    }
+  }
 }

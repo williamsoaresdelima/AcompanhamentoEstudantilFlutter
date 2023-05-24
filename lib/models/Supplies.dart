@@ -1,5 +1,5 @@
 class Supplies{
-  String id;
+  int id;
   String name;
   String description;
   double price;
@@ -23,7 +23,24 @@ class Supplies{
   imageUrl = json['imageUrl'],
   quant = json['quant'];
 
+    Supplies.fromJsonList(Map<String, dynamic> json, int id) : 
+  id = id,
+  name = json['name'],
+  description = json['description'],
+  price = json['price'],
+  imageUrl = json['imageUrl'],
+  quant = json['quant'];
+
   Map<String, dynamic> toJson() => {
+    'name' : name,
+    'price' : price,
+    'description' : description,
+    'imageUrl' : imageUrl,
+    'quant' : quant,
+  };
+
+    Map<String, dynamic> toJsonWithId() => {
+    'id' : id,
     'name' : name,
     'price' : price,
     'description' : description,
