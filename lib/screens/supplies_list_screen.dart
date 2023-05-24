@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../components/supplies_list.dart';
 import '../components/supplies_list_itens.dart';
 import '../components/supplies_overview_card.dart';
+import '../models/School.dart';
 import '../models/Supplies.dart';
 import '../providers/supplies_provider.dart';
 import '../routes/route.dart';
@@ -17,6 +18,7 @@ class SuppliesListScreen extends StatefulWidget {
 class _SuppliesListScreenState extends State<SuppliesListScreen>
 {
 
+  final List<Supplies> supplies = [];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,14 +26,19 @@ class _SuppliesListScreenState extends State<SuppliesListScreen>
         appBar: AppBar(
           title: Text("Acompanhamento Estudantil"),
         ),
-        body: 
-        ChangeNotifierProvider(
+        body: ChangeNotifierProvider(
           create: (context) => SuppliesProvider(),
           child: Column(children: [
             SuppliesOverviewCard(),
-            SuppliesList(context)
+            SuppliesList(context, supplies)
           ],) 
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () =>{
+            Navigator.of(context).pushNamed(Routes.suppliesInsertScreen)
+          })
+
       ),
     );
   }

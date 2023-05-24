@@ -17,11 +17,9 @@ class SuppliesListItens extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<SuppliesProvider>(context);
     return  ListTile(
-                leading: IconButton(icon: Icon(Icons.remove), onPressed: () => 
+                leading: IconButton(icon: Icon(Icons.delete), onPressed: () => 
                 provider.removeItem(supplie)),
                 title: Text("${supplie.name}"),
-                trailing: IconButton(icon: Icon(Icons.add), onPressed: () => 
-                provider.addItem(supplie)),
                 subtitle: Text(FormatSubtitle(supplie, supplie.quant)),
                 onTap: () {
                   Navigator.of(contexts).pushNamed(
