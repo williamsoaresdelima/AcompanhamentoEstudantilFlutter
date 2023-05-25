@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../components/supplies_list.dart';
 import '../models/School.dart';
-import '../providers/supplies_provider.dart';
 import '../routes/route.dart';
 
 class SchoolShowScreen extends StatelessWidget {
@@ -13,9 +12,25 @@ class SchoolShowScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     School school = ModalRoute.of(context)?.settings.arguments as School;
-    
+    final provider = Provider.of<SchoolProvider>(context);
+    provider.singleSchool = school;
+    provider.editing = false;
+
     return Scaffold(
-        appBar: AppBar(title: Text("${school.name}")),
+        appBar: AppBar(
+          title: Text("${provider.singleSchool.name}"),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () => {
+                        Navigator.of(context).pushNamed(Routes.schoolEditScreen,
+                            arguments: school)
+                      }),
+            ),
+          ],
+        ),
         body: ChangeNotifierProvider(
             create: (context) => SchoolProvider(),
             child: Column(
@@ -37,7 +52,7 @@ class SchoolShowScreen extends StatelessWidget {
                       enlargeFactor: 10,
                       scrollDirection: Axis.horizontal,
                     ),
-                    items: school.imageUrl.map((i) {
+                    items: provider.singleSchool.imageUrl.map((i) {
                       return Builder(
                         builder: (BuildContext context) {
                           return Container(
@@ -50,9 +65,11 @@ class SchoolShowScreen extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
-                Text("Materiais Escolares",
-                style: TextStyle(fontSize: 25),),
-                SuppliesList(context, school)
+                Text(
+                  "Materiais Escolares",
+                  style: TextStyle(fontSize: 25),
+                ),
+                SuppliesList(context, provider.singleSchool)
               ],
             )),
         floatingActionButton: FloatingActionButton(

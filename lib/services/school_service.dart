@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-
 import '../models/School.dart';
 import '../repositories/school_repository.dart';
 
