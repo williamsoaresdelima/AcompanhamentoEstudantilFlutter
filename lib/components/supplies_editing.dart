@@ -45,7 +45,7 @@ class SuppliesEditing extends StatelessWidget {
           ),
           TextField(
             controller: _description,
-            decoration: InputDecoration(labelText: "Description"),
+            decoration: InputDecoration(labelText: "Descrição"),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

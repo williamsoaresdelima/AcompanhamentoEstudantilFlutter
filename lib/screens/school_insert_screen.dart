@@ -99,8 +99,20 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
                     icon: Icon(Icons.delete), onPressed: () => removeInput()),
                 trailing: IconButton(
                     icon: Icon(Icons.add), onPressed: () => addInput())),
-            ElevatedButton(
-                onPressed: () => insertSchool(), child: const Text("Salvar"))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: ElevatedButton(
+                      onPressed: () => {Navigator.pop(context)},
+                      child: const Text("Cancelar")),
+                ),
+                ElevatedButton(
+                    onPressed: () => insertSchool(),
+                    child: const Text("Salvar")),
+              ],
+            )
           ],
         ),
       ),
@@ -133,7 +145,7 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
       Map<String, dynamic> json = await SchoolService().getAddress(_locationData.latitude, _locationData.longitude);
       Address modelAdress = Address("", "", "", "", "", "");
       modelAdress.createAdress(json);
-      
+
       return "${modelAdress.street}, ${modelAdress.district}, ${modelAdress.city} - ${modelAdress.uf}, ${modelAdress.postalCode} - ${modelAdress.country}";
     } catch (err) {
       print(err);

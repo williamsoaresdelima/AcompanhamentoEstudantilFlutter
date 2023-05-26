@@ -65,7 +65,7 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
             TextField(
                controller: _description,
               decoration: InputDecoration(
-                labelText: "description"
+                labelText: "Descrição"
               ),
             ),
             TextField(
@@ -81,9 +81,22 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
                 labelText: "Quantidade"
               ),
             ),
-            ElevatedButton(
-              onPressed: () => updateSchool(school), 
-              child: const Text("Salvar")
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: ElevatedButton(
+                        onPressed: () => {Navigator.pop(context)},
+                        child: const Text("Cancelar")),
+                  ),
+                  ElevatedButton(
+                      onPressed: () => updateSchool(school),
+                      child: const Text("Salvar")),
+                ],
+              ),
             )
           ],
         ),

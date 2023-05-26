@@ -142,7 +142,7 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
                   padding: const EdgeInsets.only(right: 15),
                   child: ElevatedButton(
                       onPressed: () => {Navigator.pop(context)},
-                      child: const Text("Cancer")),
+                      child: const Text("Cancelar")),
                 ),
                 ElevatedButton(
                     onPressed: () => UpdateSchool(),
