@@ -8,16 +8,16 @@
 
 > Flutter site Acompanhamento Estudantil
 
-### :mobile_phone: [Mobile Version]
+### 📱 [Mobile Version]
 
 Este aplicativo foi desenvolvido para atender os requisitos do módulo de desenvolvimento com Flutter e
-fornece nessa primeira versão um app em Flutter e leutirau de dados a partir do firebase.
+fornece nessa primeira versão um app em Flutter e leitura de dados a partir do firebase.
 
 <br/>
 
 ## Prerequisites
 
-List things you need to use the software and how to install them.
+Recursos necessários para a execução do software.
 - ### [x] Dart
 - ### [x] Flutter
 
@@ -47,10 +47,12 @@ Projeto é executado a partir do arquivo 'main.dart'
 
 
 <h3 align="left">Languages ​​and tools used in the project:</h3>
+
 <p align="left"> 
   <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/flutter/flutter-original.svg" alt="flutter" width="40" height="40"/>
   </a>
+  
   <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/dart/dart-original-wordmark.svg" alt="dart" width="40" height="40"/>
   </a>
