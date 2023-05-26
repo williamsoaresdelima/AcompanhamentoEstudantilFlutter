@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to Acompanhamento Estudantil Flutter 👋</h1>
+<h1 align="center">Bem vindo ao Acompanhamento Estudantil Flutter 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
   <a href="#" target="_blank">
@@ -8,14 +8,14 @@
 
 > Flutter site Acompanhamento Estudantil
 
-### 📱 [Mobile Version]
+### 📱 [Versão Mobile]
 
 Este aplicativo foi desenvolvido para atender os requisitos do módulo de desenvolvimento com Flutter e
 fornece nessa primeira versão um app em Flutter e leitura de dados a partir do firebase.
 
 <br/>
 
-## Prerequisites
+## Pré-requisitos
 
 Recursos necessários para a execução do software.
 - ### [x] Dart
@@ -24,13 +24,13 @@ Recursos necessários para a execução do software.
 <br/>
 
 
-## Install dependencies
+## Instalação de Dependências
 
 ```sh
 flutter add
 ```
 
-## Folder Structure
+## Estrutura de pastas
 
 ```sh
 flutter-app/
@@ -41,24 +41,23 @@ flutter-app/
 |- test
 ```
 
-## Run app
+## Execução do aplicativo
 
-Projeto é executado a partir do arquivo 'main.dart'
+A execução é realizada pelo próprio iniciar da IDE.
 
-
-<h3 align="left">Languages ​​and tools used in the project:</h3>
+<h3 align="left">Linguagens e recursos para a execução do aplicativo</h3>
 
 <p align="left"> 
   <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/flutter/flutter-original.svg" alt="flutter" width="40" height="40"/>
   </a>
-  
+
   <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/dart/dart-original-wordmark.svg" alt="dart" width="40" height="40"/>
   </a>
 </p>
 
-## Author
+## Autor
 
 👤 **William soares**
 
@@ -66,6 +65,6 @@ Projeto é executado a partir do arquivo 'main.dart'
 * Github: [@williamsoaresdelima](https://github.com/williamsoaresdelima)
 * LinkedIn: [@William Soares](https://linkedin.com/in/William Soares)
 
-## 🤝 Contributing
+## 🤝 Contribuições
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/williamsoaresdelima/AcompanhamentoEstudantilFlutter). 
+Contribuições são bem vindas!<br />Sinta-se livre para checar a [página](https://github.com/williamsoaresdelima/AcompanhamentoEstudantilFlutter). 
