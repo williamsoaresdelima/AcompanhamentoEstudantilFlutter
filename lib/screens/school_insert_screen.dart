@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:acompanhamento_estudantil/models/Address.dart';
+import 'package:acompanhamento_estudantil/services/school_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import '../models/School.dart';
@@ -123,6 +128,17 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
     }
 
     _locationData = await location.getLocation();
-    return "${_locationData.latitude} - ${_locationData.longitude}";
+
+    try {
+      Map<String, dynamic> json = await SchoolService().getAddress(_locationData.latitude, _locationData.longitude);
+      Address modelAdress = Address("", "", "", "", "", "");
+      modelAdress.createAdress(json);
+      
+      return "${modelAdress.street}, ${modelAdress.district}, ${modelAdress.city} - ${modelAdress.uf}, ${modelAdress.postalCode} - ${modelAdress.country}";
+    } catch (err) {
+      print(err);
+    }
+
+     return "${_locationData.latitude} - ${_locationData.longitude}";
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import '../models/Address.dart';
 import '../models/School.dart';
 import '../providers/school_provider.dart';
+import '../services/school_service.dart';
 
 class SchoolEditScreen extends StatefulWidget {
   const SchoolEditScreen({super.key});
@@ -174,6 +176,16 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
     }
 
     _locationData = await location.getLocation();
+
+    try {
+      Map<String, dynamic> json = await SchoolService().getAddress(_locationData.latitude, _locationData.longitude);
+      Address modelAdress = Address("", "", "", "", "", "");
+      modelAdress.createAdress(json);
+      return "${modelAdress.street}, ${modelAdress.district}, ${modelAdress.city} - ${modelAdress.uf}, ${modelAdress.postalCode} - ${modelAdress.country}";
+    } catch (err) {
+      print(err);
+    }
+
     return "${_locationData.latitude} - ${_locationData.longitude}";
   }
 }
