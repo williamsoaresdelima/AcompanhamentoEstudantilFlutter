@@ -1,11 +1,15 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:acompanhamento_estudantil/models/Address.dart';
 import 'package:acompanhamento_estudantil/services/school_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:indexed/indexed.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import '../components/school/school_grid_image.dart';
 import '../models/School.dart';
 import '../providers/school_provider.dart';
 import '../routes/route.dart';
@@ -24,55 +28,70 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
     getLocation().then((value) => _location.text = value);
   }
 
-  List<TextEditingController> _controllers = [TextEditingController()];
+  List<File> _image = [];
 
   final _name = TextEditingController();
   final _location = TextEditingController();
 
-  removeInput() {
-    var count = 1;
-    List<TextEditingController> newcontrollers = [];
-    _controllers.forEach((element) {
-      if (count < _controllers.length) newcontrollers.add(element);
+  removeImage(File image) {
+    List<File> newListImage = [];
 
-      count++;
+    _image.forEach((element) {
+      if (element != image) newListImage.add(element);
     });
-
     setState(() {
-      _controllers = newcontrollers;
+      _image = newListImage;
     });
   }
 
-  addInput() {
-    setState(() {
-      _controllers.add(TextEditingController());
-    });
+  Future<void> pickImage() async {
+    final pickerImage = await ImagePicker().pickImage(
+        source: ImageSource.gallery, imageQuality: 100);
+
+    if (pickerImage != null) {
+      setState(() {
+        _image.add(File(pickerImage.path));
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SchoolProvider>(context);
-    List<Widget> builderInputImageUrl() {
-      return _controllers
-          .map((controler) => TextField(
-                controller: controler,
-                decoration: InputDecoration(labelText: "Url Imagem"),
-              ))
-          .toList();
+
+    Widget builderImage() {
+      if (_image.length > 0)
+        return SchoolGridImage(_image, removeImage);
+      else
+        return Text('');
     }
 
     void insertSchool() {
-      List<String> images = [];
-      _controllers.forEach((element) => {images.add(element.text)});
-
-      School newSchoool = School("0", _name.text, [], images, _location.text);
-
+      List<String> imagesId = [];
+      int error = 0;
+      _image.forEach((element) {
+        try {
+          String id = Uuid().v4();
+          final reference = FirebaseStorage.instance.ref('school/${id}.jpg');
+          reference.putFile(element);
+          imagesId.add(id);
+        } catch (err) {
+          error++;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Erro na Autenticação, Erro técnico: ${err}"),
+            duration: Duration(seconds: 2),
+          ));
+        }
+      });
+    if(error == 0) {
+      School newSchoool = School("0", _name.text, [], imagesId, _location.text);
       provider.insert(newSchoool);
-
       setState(() {
         provider.schools.add(newSchoool);
       });
       Navigator.of(context).pushNamed(Routes.schoolListScreen);
+    }
+
     }
 
     return Scaffold(
@@ -91,14 +110,11 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
               controller: _location,
               decoration: InputDecoration(labelText: "Localização"),
             ),
-            Column(
-              children: builderInputImageUrl(),
+            Center(
+              child: IconButton(
+                  onPressed: pickImage, icon: const Icon(Icons.camera)),
             ),
-            ListTile(
-                leading: IconButton(
-                    icon: Icon(Icons.delete), onPressed: () => removeInput()),
-                trailing: IconButton(
-                    icon: Icon(Icons.add), onPressed: () => addInput())),
+            builderImage(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -142,7 +158,8 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
     _locationData = await location.getLocation();
 
     try {
-      Map<String, dynamic> json = await SchoolService().getAddress(_locationData.latitude, _locationData.longitude);
+      Map<String, dynamic> json = await SchoolService()
+          .getAddress(_locationData.latitude, _locationData.longitude);
       Address modelAdress = Address("", "", "", "", "", "");
       modelAdress.createAdress(json);
 
@@ -151,6 +168,6 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
       print(err);
     }
 
-     return "${_locationData.latitude} - ${_locationData.longitude}";
+    return "${_locationData.latitude} - ${_locationData.longitude}";
   }
 }

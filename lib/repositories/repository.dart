@@ -1,33 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 abstract class Repository {
-  final _baseUrl = "https://aesflutter-default-rtdb.firebaseio.com/";
-  final String _resource;
+  final db = FirebaseFirestore.instance;
+  // final _baseUrl = "https://aesflutter-default-rtdb.firebaseio.com/";
+  final String _collection;
 
-  Repository(this._resource);
+  Repository(this._collection);
 
-  Future<http.Response> list() {
-    final uri = Uri.parse("$_baseUrl/$_resource.json");
-    return http.get(uri);
-  }
+  Future<QuerySnapshot<Map<String, dynamic>>> list() =>
+      db.collection(_collection).get();
 
-  Future<http.Response> insert(String data) {
-    final uri = Uri.parse("$_baseUrl/$_resource.json");
-    return http.post(uri, body: data);
-  }
+  Future<DocumentReference<Map<String, dynamic>>> insert(
+      Map<String, dynamic> data) => db.collection(_collection).add(data);
 
   Future<http.Response> getById(String id) {
-    final uri = Uri.parse("$_baseUrl/$_resource/$id.json");
+    final uri = Uri.parse("/$_collection/$id.json");
     return http.get(uri);
   }
 
-  Future<http.Response> update(String id, String data) {
-    final uri = Uri.parse("$_baseUrl/$_resource/$id.json");
-    return http.put(uri, body: data);
-  }
+  Future<void> update(String id, Map<String, dynamic> data) => db.collection(_collection).doc(id).update(data);
 
   Future<http.Response> delete(String id) {
-    final uri = Uri.parse("$_baseUrl/$_resource/$id.json");
+    final uri = Uri.parse("/$_collection/$id.json");
     return http.delete(uri);
   }
 }

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'Supplies.dart';
 
 class School {
@@ -9,27 +13,35 @@ class School {
 
   School(this.id, this.name, this.supplies, this.imageUrl, this.location);
 
-  School.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
+  School.fromJson(this.id, Map<String, dynamic> json)
+      : name = json['name'],
         location = json['location'],
-        supplies = listFromJsonSupplies(json),
+        supplies = listFromJsonSupplies(json['supplies']),
         imageUrl = listFromJsonImage(json['imageUrl']);
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'supplies': supplies,
+        'supplies': ListSuppliesToJson(supplies),
         'imageUrl': imageUrl,
         'location': location,
       };
 
-  static List<School> listFromJson(Map<String, dynamic> json) {
-    List<School> school = [];
-    json.forEach((key, value) {
-      Map<String, dynamic> item = {"id": key, ...value};
-      school.add(School.fromJson(item));
+  static List<Map<String, dynamic>> ListSuppliesToJson(List<Supplies> newSupplies) 
+  {
+    List<Map<String, dynamic>> toJson = [];
+    newSupplies.forEach((element) {
+      toJson.add(element.toJson());
     });
+    return toJson;
+  }
 
+  static List<School> listFromJson(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> json) {
+    List<School> school = [];
+
+    json.forEach((value) {
+      school.add(School.fromJson(value.id, value.data()));
+    });
     return school;
   }
 
@@ -39,14 +51,11 @@ class School {
     return images;
   }
 
-  static List<Supplies> listFromJsonSupplies(Map<String, dynamic> json) {
-    List<dynamic> listDynamic = [];
+  static List<Supplies> listFromJsonSupplies(List<dynamic> listDynamic) {
     List<Supplies> supplies = [];
-    if (json['supplies'] == null) {
+    if (listDynamic == []) {
       return supplies;
     }
-
-    listDynamic = json['supplies'];
     var id = 0;
 
     listDynamic.forEach((val) => {

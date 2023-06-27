@@ -16,7 +16,7 @@ class SchoolProvider with ChangeNotifier {
   }
 
   Future<void> insert(School school) async {
-    await SchoolService().insert(school);
+    school.id = await SchoolService().insert(school);
 
     schools.add(school);
     notifyListeners();
@@ -25,7 +25,7 @@ class SchoolProvider with ChangeNotifier {
   Future<void> update(School school) async {
     singleSchool = school;
     notifyListeners();
-    await SchoolService().Update(school.id, jsonEncode(school.toJson()));
+    await SchoolService().Update(school.id, school.toJson());
     
     schools.add(school);
   }
@@ -37,7 +37,7 @@ class SchoolProvider with ChangeNotifier {
     singleSchool.supplies = newListSupplies;
     singleSchool = school;
     notifyListeners();
-    await SchoolService().Update(school.id, jsonEncode(singleSchool.toJson()));
+    await SchoolService().Update(school.id, singleSchool.toJson());
   }
 
   void removeSchool(School newSchool) async {
@@ -67,6 +67,6 @@ class SchoolProvider with ChangeNotifier {
     notifyListeners();
 
     await SchoolService()
-        .Update(sentSchool.id, jsonEncode(sentSchool.toJson()));
+        .Update(sentSchool.id, sentSchool.toJson());
   }
 }

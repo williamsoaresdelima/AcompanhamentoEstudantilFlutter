@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "97054561816",
+    "firebase_url": "https://aesflutter-default-rtdb.firebaseio.com",
+    "project_id": "aesflutter",
+    "storage_bucket": "aesflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97054561816:android:ec50165a2cf853db8c556d",
+        "android_client_info": {
+          "package_name": "br.ace.lima.acompanhamento_estudantil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97054561816-1v2srr2187pqelo2ib5m14a5sbquom4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQCUmEQqnpXFENO_RC7fxLVn-K260H9rQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97054561816-1v2srr2187pqelo2ib5m14a5sbquom4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

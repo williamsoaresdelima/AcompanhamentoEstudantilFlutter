@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:acompanhamento_estudantil/models/ScreenArguments.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../components/supplies_editing.dart';
 import '../components/supplies_overview_card.dart';
 import '../models/School.dart';
@@ -15,6 +19,10 @@ class SuppliesShowScreen extends StatefulWidget {
 }
 
 class _SuppliesShowScreenState extends State<SuppliesShowScreen> {
+  final firebaseStorage = FirebaseStorage.instance;
+  File _newImage = File('');
+  bool imageEdited = false;
+
   @override
   Widget build(BuildContext context) {
     ScreenArguments screenArguments =
@@ -26,20 +34,73 @@ class _SuppliesShowScreenState extends State<SuppliesShowScreen> {
 
     provider.supplie = supplie;
 
+    final reference =
+        firebaseStorage.ref('school/supplie/${provider.supplie.imageUrl}.jpg');
+
     void Editing(bool val) {
       setState(() {
         provider.editing = val;
       });
     }
 
-    void Edit(Supplies newSupplie) {
-      if (newSupplie.imageUrl == "") newSupplie.imageUrl = supplie.imageUrl;
-
-      provider.UpdateSupplie(newSupplie, singleSchool);
+    void SetNewImage(File newImage) {
       setState(() {
-        provider.supplie = newSupplie;
+        _newImage = newImage;
+        imageEdited = true;
       });
-      Navigator.pop(context, {'school': provider.singleSchool});
+      print(imageEdited);
+    }
+
+    Widget GetImage() {
+      if (provider.supplie.imageUrl.length > 35 && imageEdited == false) {
+        return FutureBuilder(
+            future: reference.getDownloadURL(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return const Center(child: CircularProgressIndicator());
+              else if (snapshot.hasError)
+                return const Center(child: Text("Erro ao consultar dados."));
+              else if (snapshot.hasData) {
+                final list = snapshot.data;
+                if (list != null && list.isNotEmpty)
+                  return Image.network(snapshot.data!,
+                      width: 400, height: 350, fit: BoxFit.fill);
+                else
+                  return const Center(
+                      child: Text("Nenhum material cadastrado."));
+              } else
+                return const Center(child: Text("Nenhum material cadastrado."));
+            });
+      } else if (imageEdited == true)
+        return Image.file(_newImage, width: 400, height: 350, fit: BoxFit.fill);
+      else
+        return Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: const Text('Nenhuma imagem encontrada'),
+        );
+    }
+
+    void Edit(Supplies newSupplie, File? image) async {
+      String idImage = Uuid().v4();
+      bool error = false;
+      try {
+        final reference =
+            FirebaseStorage.instance.ref('school/supplie/${idImage}.jpg');
+        reference.putFile(image!);
+      } catch (err) {
+        error = true;
+      }
+
+      if (!error)
+        newSupplie.imageUrl = idImage;
+      else 
+        newSupplie.imageUrl = supplie.imageUrl;
+
+        provider.UpdateSupplie(newSupplie, singleSchool);
+        setState(() {
+          provider.supplie = newSupplie;
+        });
+        Navigator.pop(context, {'school': provider.singleSchool});
     }
 
     dynamic VerifyFloatingButton() {
@@ -52,7 +113,7 @@ class _SuppliesShowScreenState extends State<SuppliesShowScreen> {
 
     dynamic VerifyInputs() {
       if (provider.editing) {
-        return SuppliesEditing(Editing, Edit, supplie);
+        return SuppliesEditing(SetNewImage, Editing, Edit, supplie);
       } else
         return null;
     }
@@ -63,7 +124,7 @@ class _SuppliesShowScreenState extends State<SuppliesShowScreen> {
           create: (context) => SchoolProvider(),
           child: SingleChildScrollView(
             child: Column(children: [
-              Image.network(provider.supplie.imageUrl),
+              GetImage(),
               SuppliesOverviewCard(provider.supplie),
               Padding(
                 child: VerifyInputs(),

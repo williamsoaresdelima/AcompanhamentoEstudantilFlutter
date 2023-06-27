@@ -1,13 +1,17 @@
 import 'package:acompanhamento_estudantil/providers/school_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../components/school/school_carousel_image.dart';
 import '../components/supplies_list.dart';
 import '../models/School.dart';
 import '../routes/route.dart';
 
 class SchoolShowScreen extends StatelessWidget {
-  const SchoolShowScreen({super.key});
+  SchoolShowScreen({super.key});
+
+  final firebaseStorage = FirebaseStorage.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +19,10 @@ class SchoolShowScreen extends StatelessWidget {
     final provider = Provider.of<SchoolProvider>(context);
     provider.singleSchool = school;
     provider.editing = false;
+
+    List<Widget> builderImageCarousel() => provider.singleSchool.imageUrl
+        .map((e) => SchoolCarouselImage(firebaseStorage.ref('school/${e}.jpg')))
+        .toList();
 
     return Scaffold(
         appBar: AppBar(
@@ -37,35 +45,24 @@ class SchoolShowScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 400,
-                      aspectRatio: 10,
-                      viewportFraction: 1,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: true,
-                      autoPlayInterval: Duration(seconds: 3),
-                      autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 10,
-                      scrollDirection: Axis.horizontal,
-                    ),
-                    items: provider.singleSchool.imageUrl.map((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 253, 249, 235)),
-                              child: Image.network(i));
-                        },
-                      );
-                    }).toList(),
-                  ),
+                      options: CarouselOptions(
+                        height: 400,
+                        aspectRatio: 10,
+                        viewportFraction: 1,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        reverse: false,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 10,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: builderImageCarousel()),
                 ),
-                Text(
+                const Text(
                   "Materiais Escolares",
                   style: TextStyle(fontSize: 25),
                 ),

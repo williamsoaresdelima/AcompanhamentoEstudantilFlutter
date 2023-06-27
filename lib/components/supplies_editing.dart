@@ -1,25 +1,48 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/Supplies.dart';
 
-class SuppliesEditing extends StatelessWidget {
-  SuppliesEditing(this.Editing, this.Edit, this.inputSupplie, {super.key});
+class SuppliesEditing extends StatefulWidget {
+  SuppliesEditing(this.SetNewImage,this.Editing, this.Edit, this.inputSupplie, {super.key});
 
   Supplies inputSupplie;
   final Function? Editing;
   final Function? Edit;
+  final Function? SetNewImage;
+
+  @override
+  State<SuppliesEditing> createState() => _SuppliesEditingState();
+}
+
+class _SuppliesEditingState extends State<SuppliesEditing> {
   final _name = TextEditingController();
   final _price = TextEditingController();
-  final _imageURL = TextEditingController();
   final _quant = TextEditingController();
   final _description = TextEditingController();
+  File? image;
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickerImage = await picker.pickImage(
+        source: ImageSource.gallery, imageQuality: 100, maxWidth: 600);
+
+    if (pickerImage != null) {
+      setState(() {
+        image = File(pickerImage.path);
+      });
+      widget.SetNewImage!(image);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    _name.text = inputSupplie.name;
-    _price.text = inputSupplie.price.toStringAsFixed(2);
-    _imageURL.text = inputSupplie.imageUrl;
-    _quant.text = inputSupplie.quant.toString();
-    _description.text = inputSupplie.description;
+    _name.text = widget.inputSupplie.name;
+    _price.text = widget.inputSupplie.price.toStringAsFixed(2);
+    _quant.text = widget.inputSupplie.quant.toString();
+    _description.text = widget.inputSupplie.description;
 
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -34,9 +57,8 @@ class SuppliesEditing extends StatelessWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: "Preço"),
           ),
-          TextField(
-            controller: _imageURL,
-            decoration: InputDecoration(labelText: "Url Imagem"),
+          Center(
+            child: IconButton(onPressed: pickImage, icon: const Icon(Icons.camera)),
           ),
           TextField(
             controller: _quant,
@@ -52,20 +74,20 @@ class SuppliesEditing extends StatelessWidget {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    Editing!(false);
+                    widget.Editing!(false);
                   },
                   child: const Text("Cancelar")),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: ElevatedButton(
                     onPressed: () {
-                      Edit!(Supplies(
+                      widget.Edit!(Supplies(
                           0,
                           _name.text,
                           _description.text,
                           double.parse(_price.text),
-                          _imageURL.text,
-                          int.parse(_quant.text)));
+                          '',
+                          int.parse(_quant.text)), image);
                     },
                     child: const Text("Salvar")),
               )

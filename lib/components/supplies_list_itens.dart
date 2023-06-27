@@ -26,7 +26,7 @@ class SuppliesListItens extends StatelessWidget {
         {if (element.id != supplie.id) newListSupplies.add(element)});
     schoolEdit.supplies = newListSupplies;
 
-    SchoolService().Update(schoolEdit.id, jsonEncode(school.toJson()));
+    SchoolService().Update(schoolEdit.id, school.toJson());
 
     Navigator.of(context)
         .pushNamed(Routes.schoolShowScreen, arguments: schoolEdit);

@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/School.dart';
 import '../models/Supplies.dart';
@@ -18,28 +22,55 @@ class SuppliesInsertScreen extends StatefulWidget {
 }
 
 class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
+  final _name = TextEditingController();
+  final _price = TextEditingController();
+  final _description = TextEditingController();
+  final _quant = TextEditingController();
+  bool _fileActive = false;
+  File _image = File("");
 
-  final _name = TextEditingController(); 
-  final _price = TextEditingController(); 
-  final _description = TextEditingController(); 
-  final _imageURL = TextEditingController(); 
-  final _quant = TextEditingController(); 
+  Future<void> pickImage() async {
+    final pickerImage = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 100, maxWidth: 600);
+
+    if (pickerImage != null) {
+      setState(() {
+        _image = File(pickerImage.path);
+        _fileActive = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SchoolProvider>(context);
     School school = ModalRoute.of(context)?.settings.arguments as School;
 
-  void updateSchool(School school) {
-      school.supplies.add(
-          Supplies(1, _name.text, _description.text, double.parse(_price.text), _imageURL.text, int.parse(_quant.text)
+    void updateSchool(School school) {
+      String idImage = Uuid().v4();
+      bool error = false;
+      try {
+        final reference =
+            FirebaseStorage.instance.ref('school/supplie/${idImage}.jpg');
+        reference.putFile(_image);
+      } catch (err) {
+        error = true;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Erro na Autenticação, Erro técnico: ${err}"),
+          duration: Duration(seconds: 2),
         ));
-      provider.update(school);
-      setState(() {
-        provider.singleSchool = school;
-      });
-      Navigator.pop(context);
-  }
+      }
+
+      if (!error) {
+        school.supplies.add(Supplies(1, _name.text, _description.text,
+            double.parse(_price.text), idImage, int.parse(_quant.text)));
+        provider.update(school);
+        setState(() {
+          provider.singleSchool = school;
+        });
+        Navigator.pop(context);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -51,36 +82,47 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
           children: [
             TextField(
               controller: _name,
-              decoration: InputDecoration(
-                labelText: "Nome"
-              ),
+              decoration: InputDecoration(labelText: "Nome"),
             ),
             TextField(
-               controller: _price,
+              controller: _price,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Preço"
-              ),
+              decoration: InputDecoration(labelText: "Preço"),
             ),
             TextField(
-               controller: _description,
-              decoration: InputDecoration(
-                labelText: "Descrição"
-              ),
+              controller: _description,
+              decoration: InputDecoration(labelText: "Descrição"),
             ),
             TextField(
-               controller: _imageURL,
-              decoration: InputDecoration(
-                labelText: "Url Imagem"
-              ),
-            ),
-            TextField(
-               controller: _quant,
+              controller: _quant,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Quantidade"
-              ),
+              decoration: InputDecoration(labelText: "Quantidade"),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child:
+            //       Image.file(_image, width: 300, height: 200, fit: BoxFit.fill),
+            // ),
+            Center(
+              child: !_fileActive ? Padding(
+                padding: const EdgeInsets.only(left: 70.0),
+                  child: Row(
+                    children: [         
+                      IconButton(
+                          onPressed: pickImage, icon: const Icon(Icons.camera)), 
+                          const Text("Selecione uma imagem")
+                    ],
+                  ),
+                ) : IconButton(
+                        onPressed: pickImage, icon: const Icon(Icons.camera)),
+              ),
+            _fileActive
+                ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Image.file(_image,
+                        width: 300, height: 200, fit: BoxFit.fill),
+                  )
+                : Text(""),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Row(

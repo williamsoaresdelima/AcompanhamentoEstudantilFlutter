@@ -1,9 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../routes/route.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> Entrar(BuildContext context) async {
+    auth.signOut();
+    if(auth.currentUser != null)
+      Navigator.of(context).pushNamed(Routes.schoolListScreen);
+    else
+      Navigator.of(context).pushNamed(Routes.signInScreen);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +43,7 @@ class HomeScreen extends StatelessWidget {
                 )),
           ),
           ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(Routes.schoolListScreen);
-              },
+              onPressed: () => Entrar(context),
               child: const Text("Entrar"))
         ],
       ),

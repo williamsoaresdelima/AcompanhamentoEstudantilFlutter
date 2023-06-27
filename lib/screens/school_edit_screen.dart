@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import '../components/school/school_grid_image.dart';
 import '../models/Address.dart';
 import '../models/School.dart';
 import '../providers/school_provider.dart';
@@ -17,32 +24,16 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
   final _name = TextEditingController();
   final _location = TextEditingController();
   final _getLocation = TextEditingController();
-  List<TextEditingController> _controllers = [];
+  List<File> _image = [];
+  List<String> teste = [];
+  List<String> urls = [];
+  bool checking = false;
+  bool firstImage = true;
 
   getMyLocation() {
     getLocation().then((value) => setState(() {
           _getLocation.text = value;
         }));
-  }
-
-  removeInput() {
-    var count = 1;
-    List<TextEditingController> newcontrollers = [];
-    _controllers.forEach((element) {
-      if (count < _controllers.length) newcontrollers.add(element);
-
-      count++;
-    });
-
-    setState(() {
-      _controllers = newcontrollers;
-    });
-  }
-
-  addInput() {
-    setState(() {
-      _controllers.add(TextEditingController());
-    });
   }
 
   Widget builderGetLocation() {
@@ -65,21 +56,103 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
     );
   }
 
+  removeImage(File image) {
+    List<File> newListImage = [];
+
+    _image.forEach((element) {
+      if (element != image) newListImage.add(element);
+    });
+    setState(() {
+      _image = newListImage;
+    });
+  }
+
+  Future<void> pickImage() async {
+    final pickerImage = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 100);
+
+    if (pickerImage != null) {
+      setState(() {
+        _image.add(File(pickerImage.path));
+      });
+    }
+  }
+
+  Widget builderImage() {
+    if (_image.length > 0)
+      return SchoolGridImage(_image, removeImage);
+    else
+      return Text('');
+  }
+
+  void ImagesIdtoFile(String imagesId) async {
+    Future.delayed(const Duration(milliseconds: 3000), () async {
+      if (_image.length < imagesId.length) {
+        String idDirectory = Uuid().v4();
+        File file = File('');
+        final reference =
+            FirebaseStorage.instance.ref('school/${imagesId}.jpg');
+        try {
+          var directory = await Directory(
+                  '/data/user/0/br.ace.lima.acompanhamento_estudantil/cache/${idDirectory}')
+              .create(recursive: true);
+          var bytes = await reference.getData();
+
+          file = await File('${directory.path}/${imagesId}.jpg')
+              .writeAsBytes(bytes!);
+          setState(() {
+            _image.add(file);
+          });
+        } catch (err) {
+          print(err);
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    teste = [];
     School school = ModalRoute.of(context)?.settings.arguments as School;
     final provider = Provider.of<SchoolProvider>(context);
     provider.singleSchool = school;
-
+    teste = provider.singleSchool.imageUrl;
     _location.text = provider.singleSchool.location;
     _name.text = provider.singleSchool.name;
 
+    if (provider.singleSchool.imageUrl.length > 0 && firstImage) {
+      setState(() {
+        firstImage = false;
+      });
+      for (var id in provider.singleSchool.imageUrl) {
+        ImagesIdtoFile(id);
+      }
+    }
+
     void UpdateSchool() {
-      List<String> images = [];
-      _controllers.forEach((element) => {images.add(element.text)});
+      List<String> imagesId = [];
+
+      int error = 0;
+      _image.forEach((element) {
+          var teste = provider.singleSchool.imageUrl
+              .where((image) => image == element);
+                  print('TESTEEE');
+                      print(teste.length);
+        try {
+          if (teste.length == 0 || teste == null) {
+            print('VEEEEEEER');
+            String id = Uuid().v4();
+            final reference = FirebaseStorage.instance.ref('school/${id}.jpg');
+            reference.putFile(element);
+         
+          }
+          else
+            imagesId.add(teste.first);
+        } catch (err) {}
+      });
 
       school.name = _name.text;
-      school.imageUrl = images;
+      school.imageUrl = imagesId;
 
       if (_getLocation.text.length > 0)
         school.location = _getLocation.text;
@@ -91,27 +164,6 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
         provider.singleSchool = school;
       });
       Navigator.pop(context);
-    }
-
-    List<Widget> builderInputImageUrl() {
-      if (_controllers.length == 0) {
-        List<TextEditingController> QuantControlers = [];
-        school.imageUrl.forEach((element) {
-          TextEditingController controler = TextEditingController();
-
-          controler.text = element;
-          QuantControlers.add(controler);
-        });
-
-        _controllers = QuantControlers;
-      }
-
-      return _controllers
-          .map((controler) => TextField(
-                controller: controler,
-                decoration: InputDecoration(labelText: "Url Imagem"),
-              ))
-          .toList();
     }
 
     return Scaffold(
@@ -127,14 +179,11 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
               decoration: InputDecoration(labelText: "Nome"),
             ),
             builderGetLocation(),
-            Column(
-              children: builderInputImageUrl(),
+            Center(
+              child: IconButton(
+                  onPressed: pickImage, icon: const Icon(Icons.camera)),
             ),
-            ListTile(
-                leading: IconButton(
-                    icon: Icon(Icons.delete), onPressed: () => removeInput()),
-                trailing: IconButton(
-                    icon: Icon(Icons.add), onPressed: () => addInput())),
+            builderImage(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -178,7 +227,8 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
     _locationData = await location.getLocation();
 
     try {
-      Map<String, dynamic> json = await SchoolService().getAddress(_locationData.latitude, _locationData.longitude);
+      Map<String, dynamic> json = await SchoolService()
+          .getAddress(_locationData.latitude, _locationData.longitude);
       Address modelAdress = Address("", "", "", "", "", "");
       modelAdress.createAdress(json);
       return "${modelAdress.street}, ${modelAdress.district}, ${modelAdress.city} - ${modelAdress.uf}, ${modelAdress.postalCode} - ${modelAdress.country}";
