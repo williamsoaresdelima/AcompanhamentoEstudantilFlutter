@@ -134,17 +134,14 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
 
       int error = 0;
       _image.forEach((element) {
-          var teste = provider.singleSchool.imageUrl
-              .where((image) => image == element);
-                  print('TESTEEE');
-                      print(teste.length);
+          var teste = provider.singleSchool.imageUrl.where((image) => image == element).toList();
+          
         try {
           if (teste.length == 0 || teste == null) {
-            print('VEEEEEEER');
             String id = Uuid().v4();
             final reference = FirebaseStorage.instance.ref('school/${id}.jpg');
             reference.putFile(element);
-         
+            imagesId.add(id);
           }
           else
             imagesId.add(teste.first);
