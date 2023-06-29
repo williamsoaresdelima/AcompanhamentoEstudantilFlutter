@@ -1,5 +1,5 @@
 class Supplies {
-  int id;
+  String id;
   String name;
   String description;
   double price;
@@ -17,7 +17,7 @@ class Supplies {
         imageUrl = json['imageUrl'],
         quant = json['quant'];
 
-  Supplies.fromJsonList(Map<String, dynamic> json, int id)
+  Supplies.fromJsonList(Map<String, dynamic> json, String id)
       : id = id,
         name = json['name'],
         description = json['description'],

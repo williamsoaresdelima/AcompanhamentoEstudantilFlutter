@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         Routes.suppliesInsertScreen: (context) => SuppliesInsertScreen(),
         Routes.schoolShowScreen: (context) => SchoolShowScreen(),
         Routes.schoolListScreen: (context) => SchoolListScreen(),
-        Routes.homeScreen: (context) => HomeScreen(),
+        // Routes.homeScreen: (context) => HomeScreen(),
         Routes.schoolInsertScreen: (context) => SchoolInsertScreen(),
         Routes.schoolEditScreen: (context) => SchoolEditScreen()
       }

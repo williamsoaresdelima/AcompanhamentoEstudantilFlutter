@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../AppGlobalKeys.dart';
 import '../routes/route.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -15,10 +16,10 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth auth = FirebaseAuth.instance;
   bool _loading = false;
 
   Future<void> Login() async {
+      final FirebaseAuth auth = FirebaseAuth.instance;
     setState(() {
       _loading = true;
     });
@@ -70,10 +71,12 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               children: [
                 TextField(
+                  key: AppSignInKeys.inputEmailKey,
                   controller: _emailController,
                   decoration: InputDecoration(labelText: "E-mail"),
                 ),
                 TextField(
+                  key: AppSignInKeys.inputPasswordKey,
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(labelText: "Senha"),
@@ -83,7 +86,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     : Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: ElevatedButton(
-                            onPressed: () => Login(),
+                            key: AppSignInKeys.buttonKey,
+                            onPressed: () => {},
                             child: const Text("Entrar")),
                       ),
               ],
@@ -92,8 +96,9 @@ class _SignInScreenState extends State<SignInScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 250, top: 20),
             child: InkWell(
+              key: AppSignInKeys.buttonCreateAccountKey,
               onTap: () {
-                Navigator.of(context).pushNamed(Routes.createAccountScreen);
+                 Navigator.of(context).pushNamed(Routes.createAccountScreen);
               },
               child: const Text("Criar Conta"),
             ),

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import '../AppGlobalKeys.dart';
 import '../components/school/school_grid_image.dart';
 import '../models/Address.dart';
 import '../models/School.dart';
@@ -45,6 +46,7 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
 
     return ListTile(
       trailing: IconButton(
+          key: AppSchoolEditKeys.buttonGetLocation,
           icon: Icon(
             Icons.gps_fixed,
           ),
@@ -86,12 +88,14 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
   }
 
   void ImagesIdtoFile(String imagesId) async {
-    Future.delayed(const Duration(milliseconds: 3000), () async {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
       if (_image.length < imagesId.length) {
         String idDirectory = Uuid().v4();
         File file = File('');
         final reference =
             FirebaseStorage.instance.ref('school/${imagesId}.jpg');
+            print('TESTE');
+                 print(reference);
         try {
           var directory = await Directory(
                   '/data/user/0/br.ace.lima.acompanhamento_estudantil/cache/${idDirectory}')
@@ -172,12 +176,14 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
         child: Column(
           children: [
             TextField(
+              key: AppSchoolEditKeys.inputName,
               controller: _name,
               decoration: InputDecoration(labelText: "Nome"),
             ),
             builderGetLocation(),
             Center(
               child: IconButton(
+                  key: AppSchoolEditKeys.buttonAddImage,
                   onPressed: pickImage, icon: const Icon(Icons.camera)),
             ),
             builderImage(),
@@ -187,10 +193,12 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
                   child: ElevatedButton(
+                      key: AppSchoolEditKeys.buttonCancel,
                       onPressed: () => {Navigator.pop(context)},
                       child: const Text("Cancelar")),
                 ),
                 ElevatedButton(
+                    key: AppSchoolEditKeys.buttonSave,
                     onPressed: () => UpdateSchool(),
                     child: const Text("Salvar")),
               ],

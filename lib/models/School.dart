@@ -59,7 +59,7 @@ class School {
     var id = 0;
 
     listDynamic.forEach((val) => {
-          supplies.add(Supplies.fromJsonList(val, id)),
+          supplies.add(Supplies.fromJsonList(val, id.toString())),
           id++,
         });
 

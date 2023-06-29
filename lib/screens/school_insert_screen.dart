@@ -9,6 +9,7 @@ import 'package:indexed/indexed.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import '../AppGlobalKeys.dart';
 import '../components/school/school_grid_image.dart';
 import '../models/School.dart';
 import '../providers/school_provider.dart';
@@ -89,7 +90,7 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
       setState(() {
         provider.schools.add(newSchoool);
       });
-      Navigator.of(context).pushNamed(Routes.schoolListScreen);
+      Navigator.of(context).pushReplacementNamed(Routes.schoolListScreen);
     }
 
     }
@@ -103,15 +104,18 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
         child: Column(
           children: [
             TextField(
+              key: AppSchoolInsertKeys.inputName,
               controller: _name,
               decoration: InputDecoration(labelText: "Nome"),
             ),
             TextField(
+              key: AppSchoolInsertKeys.inputLocation,
               controller: _location,
               decoration: InputDecoration(labelText: "Localização"),
             ),
             Center(
               child: IconButton(
+                  key: AppSchoolInsertKeys.buttonAddImage,
                   onPressed: pickImage, icon: const Icon(Icons.camera)),
             ),
             builderImage(),
@@ -121,10 +125,12 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
                   child: ElevatedButton(
+                      key: AppSchoolInsertKeys.buttonCancel,
                       onPressed: () => {Navigator.pop(context)},
                       child: const Text("Cancelar")),
                 ),
                 ElevatedButton(
+                    key: AppSchoolInsertKeys.buttonSave,
                     onPressed: () => insertSchool(),
                     child: const Text("Salvar")),
               ],
@@ -147,7 +153,6 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) Future.value("");
     }
-
     _permissionGranted = await location.hasPermission();
 
     if (_permissionGranted == PermissionStatus.denied) {

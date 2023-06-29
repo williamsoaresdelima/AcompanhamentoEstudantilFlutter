@@ -82,7 +82,7 @@ class _SuppliesEditingState extends State<SuppliesEditing> {
                 child: ElevatedButton(
                     onPressed: () {
                       widget.Edit!(Supplies(
-                          0,
+                          '0',
                           _name.text,
                           _description.text,
                           double.parse(_price.text),

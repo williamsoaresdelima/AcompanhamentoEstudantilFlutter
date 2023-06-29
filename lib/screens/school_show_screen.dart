@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../AppGlobalKeys.dart';
 import '../components/school/school_carousel_image.dart';
 import '../components/supplies_list.dart';
 import '../models/School.dart';
@@ -10,9 +11,6 @@ import '../routes/route.dart';
 
 class SchoolShowScreen extends StatelessWidget {
   SchoolShowScreen({super.key});
-
-  final firebaseStorage = FirebaseStorage.instance;
-
   @override
   Widget build(BuildContext context) {
     School school = ModalRoute.of(context)?.settings.arguments as School;
@@ -21,16 +19,18 @@ class SchoolShowScreen extends StatelessWidget {
     provider.editing = false;
 
     List<Widget> builderImageCarousel() => provider.singleSchool.imageUrl
-        .map((e) => SchoolCarouselImage(firebaseStorage.ref('school/${e}.jpg')))
+        .map((e) => SchoolCarouselImage(FirebaseStorage.instance.ref('school/${e}.jpg')))
         .toList();
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("${provider.singleSchool.name}"),
+          title: Text(
+            "${provider.singleSchool.name}"),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 15),
               child: IconButton(
+                  key: AppSchoolShowKeys.buttonEditSchool,
                   icon: Icon(Icons.edit),
                   onPressed: () => {
                         Navigator.of(context).pushNamed(Routes.schoolEditScreen,
@@ -45,6 +45,7 @@ class SchoolShowScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: CarouselSlider(
+                    key: AppSchoolShowKeys.carouselImage,
                       options: CarouselOptions(
                         height: 400,
                         aspectRatio: 10,
@@ -70,10 +71,10 @@ class SchoolShowScreen extends StatelessWidget {
               ],
             )),
         floatingActionButton: FloatingActionButton(
+            key: AppSchoolShowKeys.buttonAddSupplies,
             child: Icon(Icons.add),
             onPressed: () => {
-                  Navigator.of(context)
-                      .pushNamed(Routes.suppliesInsertScreen, arguments: school)
+                  Navigator.of(context).pushNamed(Routes.suppliesInsertScreen, arguments: school)
                 }));
   }
 }

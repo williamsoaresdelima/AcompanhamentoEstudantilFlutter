@@ -7,7 +7,7 @@ import '../services/school_service.dart';
 class SchoolProvider with ChangeNotifier {
   List<School> schools = [];
   School singleSchool = School("0", "", [], [], "");
-  Supplies supplie = Supplies(0, "", "", 0.00, "", 0);
+  Supplies supplie = Supplies('0', "", "", 0.00, "", 0);
   bool editing = false;
 
   Future<List<School>> list() async {
