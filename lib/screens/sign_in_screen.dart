@@ -87,7 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: const EdgeInsets.only(top: 20),
                         child: ElevatedButton(
                             key: AppSignInKeys.buttonKey,
-                            onPressed: () => {},
+                            onPressed: () => Login(),
                             child: const Text("Entrar")),
                       ),
               ],

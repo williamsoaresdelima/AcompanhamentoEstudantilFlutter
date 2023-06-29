@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
+import 'package:location/location.dart';
 import '../models/School.dart';
 import '../repositories/school_repository.dart';
-import 'package:http/http.dart' as http;
 
 class SchoolService {
-  final _key = "AIzaSyBaSib038pliNynRUQ8oPCbEF_6D_Bs5vs";
-  final _urlGoogle = "https://maps.googleapis.com/maps/api/geocode/json?";
   final SchoolRepository _schoolRepository = SchoolRepository();
 
   Future<List<School>> list() async {
@@ -51,9 +48,27 @@ class SchoolService {
     }
   }
 
-  Future<Map<String, dynamic>> getAddress(double? lat, double? long) async {
-    final uri = Uri.parse("${_urlGoogle}latlng=${lat},${long}&key=${_key}");
-    Response response = await http.get(uri);
-    return jsonDecode(response.body);
+  Future<LocationData> GetPermission() async {
+    Location location = Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+
+    if (!_serviceEnabled) {
+              print('teste1');
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) Future.value(null);
+    }
+
+    _permissionGranted = await location.hasPermission();
+
+    if (_permissionGranted == PermissionStatus.denied) {
+              print('teste2');
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) Future.value(null);
+    }
+
+   return await location.getLocation();
   }
 }

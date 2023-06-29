@@ -26,18 +26,18 @@ class Address {
         'postalCode': postalCode,
       };
 
-  createAdress(Map<String, dynamic> json) {
-    dynamic listDynamic = json["results"][0];
-    List<dynamic> listDynamic2 = listDynamic["address_components"];
-    var count = 0;
-    listDynamic2.forEach((val) => {
-          if (count == 1) street = val["long_name"],
-          if (count == 2) district = val["long_name"],
-          if (count == 3) city = val["long_name"],
-          if (count == 4) uf = val["long_name"],
-          if (count == 5) country = val["long_name"],
-          if (count == 6) postalCode = val["long_name"],
-          count++
-        });
-  }
+  // createAdress(Map<String, dynamic> json) {
+  //   dynamic listDynamic = json["results"][0];
+  //   List<dynamic> listDynamic2 = listDynamic["address_components"];
+  //   var count = 0;
+  //   listDynamic2.forEach((val) => {
+  //         if (count == 1) street = val["long_name"],
+  //         if (count == 2) district = val["long_name"],
+  //         if (count == 3) city = val["long_name"],
+  //         if (count == 4) uf = val["long_name"],
+  //         if (count == 5) country = val["long_name"],
+  //         if (count == 6) postalCode = val["long_name"],
+  //         count++
+  //       });
+  // }
 }

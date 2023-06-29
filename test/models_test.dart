@@ -21,37 +21,6 @@ void main() {
       };
       expect(map, matcher);
     });
-
-    test('"createAdress" do Address', () {
-      final address = Address('', '', '', '', '', '');
-      var json = {
-        'results': [
-          {
-            'address_components': [
-              {'long_name': 'cityCode'},
-              {'long_name': 'street'},
-              {'long_name': 'district'},
-              {'long_name': 'city'},
-              {'long_name': 'uf'},
-              {'long_name': 'country'},
-              {'long_name': 'postalCode'},
-            ]
-          }
-        ]
-      };
-
-      address.createAdress(json);
-      var matcher = {
-        'street': 'street',
-        'district': 'district',
-        'city': 'city',
-        'uf': 'uf',
-        'country': 'country',
-        'postalCode': 'postalCode'
-      };
-      var result = address.toJson();
-      expect(result, matcher);
-    });
   });
 
   group('School', () {

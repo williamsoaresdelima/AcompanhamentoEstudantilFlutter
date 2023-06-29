@@ -14,6 +14,7 @@ import '../components/school/school_grid_image.dart';
 import '../models/School.dart';
 import '../providers/school_provider.dart';
 import '../routes/route.dart';
+import 'package:acompanhamento_estudantil_pk/acompanhamento_estudantil_pk.dart';
 
 class SchoolInsertScreen extends StatefulWidget {
   const SchoolInsertScreen({super.key});
@@ -142,37 +143,9 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
   }
 
   Future<String> getLocation() async {
-    Location location = Location();
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) Future.value("");
-    }
-    _permissionGranted = await location.hasPermission();
-
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) Future.value("");
-    }
-
-    _locationData = await location.getLocation();
-
-    try {
-      Map<String, dynamic> json = await SchoolService()
-          .getAddress(_locationData.latitude, _locationData.longitude);
-      Address modelAdress = Address("", "", "", "", "", "");
-      modelAdress.createAdress(json);
-
-      return "${modelAdress.street}, ${modelAdress.district}, ${modelAdress.city} - ${modelAdress.uf}, ${modelAdress.postalCode} - ${modelAdress.country}";
-    } catch (err) {
-      print(err);
-    }
-
-    return "${_locationData.latitude} - ${_locationData.longitude}";
+     LocationData _locationData = await SchoolService().GetPermission();
+     print('TESTE');
+      print(_locationData);
+    return LocationAdress().getLocation(_locationData.latitude, _locationData.longitude);
   }
 }
