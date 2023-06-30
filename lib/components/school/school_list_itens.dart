@@ -20,7 +20,7 @@ class _SchoolListItensState extends State<SchoolListItens> {
   Widget build(BuildContext context) {
 
     final provider = Provider.of<SchoolProvider>(context);
-
+    provider.singleSchool = widget.school;
     return Column(
       children: [
         ListTile(
@@ -31,7 +31,7 @@ class _SchoolListItensState extends State<SchoolListItens> {
           subtitle: Text("Particular"),
           onTap: () {
             Navigator.of(widget.contexts)
-                .pushNamed(Routes.schoolShowScreen, arguments: widget.school);
+                .pushNamed(Routes.schoolShowScreen, arguments: provider);
           },
         ),
       ],

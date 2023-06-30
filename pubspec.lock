@@ -14,7 +14,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "7e1a63d9321b66695ea246bd75d4a8717c4b2efc"
+      resolved-ref: "36e4eda625c013e7f71be859fbc2159ed3443d60"
       url: "https://github.com/williamsoaresdelima/acompanhamento_estudantil_pk.git"
     source: git
     version: "0.0.1"

@@ -8,6 +8,7 @@
 import 'package:acompanhamento_estudantil/AppGlobalKeys.dart';
 import 'package:acompanhamento_estudantil/firebase_options.dart';
 import 'package:acompanhamento_estudantil/models/School.dart';
+import 'package:acompanhamento_estudantil/models/Users.dart';
 import 'package:acompanhamento_estudantil/providers/school_provider.dart';
 import 'package:acompanhamento_estudantil/routes/route.dart';
 import 'package:acompanhamento_estudantil/screens/school_edit_screen.dart';
@@ -39,11 +40,28 @@ void main() {
     });
 
     testWidgets('test interface SchoolListScreen', (tester) async {
-      var schoolListScreen = MaterialApp(
-        home: SchoolListScreen(),
+      Users user = Users('', '', '', '', '');
+
+      Widget child = SchoolListScreen();
+      final key = GlobalKey<NavigatorState>();
+
+      var test = MaterialApp(
+        navigatorKey: key,
+        home: FloatingActionButton(
+          onPressed: () => key.currentState?.push(
+            MaterialPageRoute<void>(
+              settings: RouteSettings(arguments: user),
+              builder: (_) => child,
+            ),
+          ),
+          child: const SizedBox(),
+        ),
       );
 
-      await tester.pumpWidget(schoolListScreen);
+      await tester.pumpWidget(test);
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+
 
       expect(find.byKey(AppSchoolListKeys.schoolList), findsOneWidget);
       expect(find.byKey(AppSchoolListKeys.addButtonSchool), findsOneWidget);
@@ -51,7 +69,7 @@ void main() {
     });
 
     testWidgets('test interface SuppliesInsertScreen', (tester) async {
-      var school = School('0', 'name', [], [], 'location');
+      var school = School('0', 'name', [], [], 'location', '');
       Widget child = SuppliesInsertScreen();
       final key = GlobalKey<NavigatorState>();
 
@@ -83,7 +101,7 @@ void main() {
     });
 
     testWidgets('test interface SchoolShowScreen', (tester) async {
-      var school = School('0', 'name', [], [], 'location');
+      SchoolProvider provider =SchoolProvider();
       Widget child = SchoolShowScreen();
       final key = GlobalKey<NavigatorState>();
 
@@ -92,7 +110,7 @@ void main() {
         home: FloatingActionButton(
           onPressed: () => key.currentState?.push(
             MaterialPageRoute<void>(
-              settings: RouteSettings(arguments: school),
+              settings: RouteSettings(arguments: provider),
               builder: (_) => child,
             ),
           ),
@@ -119,21 +137,35 @@ void main() {
     });
 
     testWidgets('test interface SchoolInsertScreen', (tester) async {
-      var school = School('0', 'name', [], [], 'location');
+      var school = School('0', 'name', [], [], 'location', '');
+      Users user = Users('', '', '', '', '');
       final key = GlobalKey<NavigatorState>();
+      var child = SchoolInsertScreen();
 
-      const schoolInsertScreen = MaterialApp(
-        home: SchoolInsertScreen(),
+           var materialApp = MaterialApp(
+        navigatorKey: key,
+        home: FloatingActionButton(
+          onPressed: () => key.currentState?.push(
+            MaterialPageRoute<void>(
+              settings: RouteSettings(arguments: user),
+              builder: (_) => child,
+            ),
+          ),
+          child: const SizedBox(),
+        ),
       );
 
       var test = MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => SchoolProvider()),
         ],
-        child: schoolInsertScreen,
+        child: materialApp,
       );
 
+     
       await tester.pumpWidget(test);
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
 
       expect(find.byKey(AppSchoolInsertKeys.buttonAddImage), findsOneWidget);
       expect(find.byKey(AppSchoolInsertKeys.buttonCancel), findsOneWidget);
@@ -144,7 +176,8 @@ void main() {
     });
 
     testWidgets('test interface SchoolEditScreen', (tester) async {
-      var school = School('0', 'name', [], [], 'location');
+      var school = School('0', 'name', [], [], 'location', '');
+      SchoolProvider provider = SchoolProvider();
       Widget child = const SchoolEditScreen();
       final key = GlobalKey<NavigatorState>();
 
@@ -153,7 +186,7 @@ void main() {
         home: FloatingActionButton(
           onPressed: () => key.currentState?.push(
             MaterialPageRoute<void>(
-              settings: RouteSettings(arguments: school),
+              settings: RouteSettings(arguments: provider),
               builder: (_) => child,
             ),
           ),

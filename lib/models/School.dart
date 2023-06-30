@@ -6,16 +6,18 @@ import 'Supplies.dart';
 
 class School {
   String id;
+  String userId;
   String name;
   String location;
   List<Supplies> supplies;
   List<String> imageUrl;
 
-  School(this.id, this.name, this.supplies, this.imageUrl, this.location);
+  School(this.id, this.name, this.supplies, this.imageUrl, this.location, this.userId);
 
   School.fromJson(this.id, Map<String, dynamic> json)
       : name = json['name'],
         location = json['location'],
+        userId = json['userId'],
         supplies = listFromJsonSupplies(json['supplies']),
         imageUrl = listFromJsonImage(json['imageUrl']);
 
@@ -24,6 +26,7 @@ class School {
         'supplies': ListSuppliesToJson(supplies),
         'imageUrl': imageUrl,
         'location': location,
+        'userId': userId
       };
 
   static List<Map<String, dynamic>> ListSuppliesToJson(List<Supplies> newSupplies) 

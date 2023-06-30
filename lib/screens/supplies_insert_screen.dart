@@ -44,11 +44,10 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
 
   @override
   Widget build(BuildContext context) {
-    School school = ModalRoute.of(context)?.settings.arguments as School;
+    SchoolProvider provider = ModalRoute.of(context)?.settings.arguments as SchoolProvider;
 
 
     void updateSchool() {
-      final provider = Provider.of<SchoolProvider>(context);
 
       String idImage = Uuid().v4();
       bool error = false;
@@ -63,16 +62,12 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
           duration: Duration(seconds: 2),
         ));
       }
-
-      if (!error) {
-        school.supplies.add(Supplies('1', _name.text, _description.text,
+        provider.singleSchool.supplies.add(Supplies('1', _name.text, _description.text,
             double.parse(_price.text), idImage, int.parse(_quant.text)));
-        provider.update(school);
-        setState(() {
-          provider.singleSchool = school;
-        });
-        Navigator.pop(context);
-      }
+        provider.update(provider.singleSchool);
+
+
+        Navigator.of(context).pushReplacementNamed(Routes.schoolShowScreen, arguments: provider);
     }
 
     return Scaffold(

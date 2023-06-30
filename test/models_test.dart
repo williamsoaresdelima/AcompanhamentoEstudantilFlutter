@@ -29,7 +29,7 @@ void main() {
       supplies.add(Supplies('1', 'name', 'description', 0.0, 'imageUrl', 0));
       List<String> imageUrl = [];
       imageUrl.add('image');
-      final school = School('1', 'name', supplies, imageUrl, 'location');
+      final school = School('1', 'name', supplies, imageUrl, 'location', '');
 
       final map = school.toJson();
 

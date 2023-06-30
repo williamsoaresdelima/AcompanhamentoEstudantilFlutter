@@ -12,7 +12,9 @@ import 'package:uuid/uuid.dart';
 import '../AppGlobalKeys.dart';
 import '../components/school/school_grid_image.dart';
 import '../models/School.dart';
+import '../models/Users.dart';
 import '../providers/school_provider.dart';
+import '../providers/user_provider.dart';
 import '../routes/route.dart';
 import 'package:acompanhamento_estudantil_pk/acompanhamento_estudantil_pk.dart';
 
@@ -41,14 +43,15 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
     _image.forEach((element) {
       if (element != image) newListImage.add(element);
     });
+
     setState(() {
       _image = newListImage;
     });
   }
 
   Future<void> pickImage() async {
-    final pickerImage = await ImagePicker().pickImage(
-        source: ImageSource.gallery, imageQuality: 100);
+    final pickerImage = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 100);
 
     if (pickerImage != null) {
       setState(() {
@@ -60,6 +63,8 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SchoolProvider>(context);
+    Users users = ModalRoute.of(context)?.settings.arguments as Users;
+    provider.user = users;
 
     Widget builderImage() {
       if (_image.length > 0)
@@ -85,15 +90,16 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
           ));
         }
       });
-    if(error == 0) {
-      School newSchoool = School("0", _name.text, [], imagesId, _location.text);
-      provider.insert(newSchoool);
-      setState(() {
-        provider.schools.add(newSchoool);
-      });
-      Navigator.of(context).pushReplacementNamed(Routes.schoolListScreen);
-    }
+      if (error == 0) {
 
+        School newSchoool =
+            School("0", _name.text, [], imagesId, _location.text, users.id);
+        provider.insert(newSchoool);
+        setState(() {
+          provider.schools.add(newSchoool);
+        });
+        Navigator.of(context).pushReplacementNamed(Routes.schoolListScreen, arguments: users);
+      }
     }
 
     return Scaffold(
@@ -117,7 +123,8 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
             Center(
               child: IconButton(
                   key: AppSchoolInsertKeys.buttonAddImage,
-                  onPressed: pickImage, icon: const Icon(Icons.camera)),
+                  onPressed: pickImage,
+                  icon: const Icon(Icons.camera)),
             ),
             builderImage(),
             Row(
@@ -143,9 +150,8 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
   }
 
   Future<String> getLocation() async {
-     LocationData _locationData = await SchoolService().GetPermission();
-     print('TESTE');
-      print(_locationData);
-    return LocationAdress().getLocation(_locationData.latitude, _locationData.longitude);
+    LocationData _locationData = await SchoolService().GetPermission();
+    return LocationAdress()
+        .getLocation(_locationData.latitude, _locationData.longitude);
   }
 }

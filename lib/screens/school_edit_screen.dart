@@ -13,6 +13,7 @@ import '../components/school/school_grid_image.dart';
 import '../models/Address.dart';
 import '../models/School.dart';
 import '../providers/school_provider.dart';
+import '../routes/route.dart';
 import '../services/school_service.dart';
 
 class SchoolEditScreen extends StatefulWidget {
@@ -118,9 +119,8 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
   @override
   Widget build(BuildContext context) {
     teste = [];
-    School school = ModalRoute.of(context)?.settings.arguments as School;
-    final provider = Provider.of<SchoolProvider>(context);
-    provider.singleSchool = school;
+    SchoolProvider provider = ModalRoute.of(context)?.settings.arguments as SchoolProvider;
+    var school = provider.singleSchool;
     teste = provider.singleSchool.imageUrl;
     _location.text = provider.singleSchool.location;
     _name.text = provider.singleSchool.name;
@@ -165,7 +165,8 @@ class _SchoolEditScreenState extends State<SchoolEditScreen> {
       setState(() {
         provider.singleSchool = school;
       });
-      Navigator.pop(context);
+           Navigator.of(context).pushReplacementNamed(
+            Routes.schoolListScreen, arguments: provider.user);
     }
 
     return Scaffold(

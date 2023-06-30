@@ -13,8 +13,8 @@ class SchoolShowScreen extends StatelessWidget {
   SchoolShowScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    School school = ModalRoute.of(context)?.settings.arguments as School;
-    final provider = Provider.of<SchoolProvider>(context);
+    SchoolProvider provider = ModalRoute.of(context)?.settings.arguments as SchoolProvider;
+    var school = provider.singleSchool;
     provider.singleSchool = school;
     provider.editing = false;
 
@@ -34,7 +34,7 @@ class SchoolShowScreen extends StatelessWidget {
                   icon: Icon(Icons.edit),
                   onPressed: () => {
                         Navigator.of(context).pushNamed(Routes.schoolEditScreen,
-                            arguments: school)
+                            arguments: provider)
                       }),
             ),
           ],
@@ -74,7 +74,7 @@ class SchoolShowScreen extends StatelessWidget {
             key: AppSchoolShowKeys.buttonAddSupplies,
             child: Icon(Icons.add),
             onPressed: () => {
-                  Navigator.of(context).pushNamed(Routes.suppliesInsertScreen, arguments: school)
+                  Navigator.of(context).pushNamed(Routes.suppliesInsertScreen, arguments: provider)
                 }));
   }
 }
