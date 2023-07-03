@@ -22,9 +22,7 @@ class SchoolProvider with ChangeNotifier {
   }
 
   Future<List<Users>> listUsers() async {
-    print('VEEER');
     var users = await UserService().list();
-      print(users);
     return users;
   }
 
@@ -63,6 +61,8 @@ class SchoolProvider with ChangeNotifier {
     schools.forEach((School element) =>
         {if (element.id != newSchool.id) newListSchool.add(element)});
 
+    print('TESTE');
+      print(newListSchool.first.id);
     schools = newListSchool;
     notifyListeners();
 

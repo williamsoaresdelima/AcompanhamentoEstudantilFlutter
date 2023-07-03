@@ -76,77 +76,79 @@ class _SuppliesInsertScreenState extends State<SuppliesInsertScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            TextField(
-              key: AppSuppliesInsertKeys.inputName,
-              controller: _name,
-              decoration: InputDecoration(labelText: "Nome"),
-            ),
-            TextField(
-              key: AppSuppliesInsertKeys.inputPrice,
-              controller: _price,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Preço"),
-            ),
-            TextField(
-              key: AppSuppliesInsertKeys.inputDescription,
-              controller: _description,
-              decoration: InputDecoration(labelText: "Descrição"),
-            ),
-            TextField(
-              key: AppSuppliesInsertKeys.inputQuant,
-              controller: _quant,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Quantidade"),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(20.0),
-            //   child:
-            //       Image.file(_image, width: 300, height: 200, fit: BoxFit.fill),
-            // ),
-            Center(
-              child: !_fileActive ? Padding(
-                padding: const EdgeInsets.only(left: 70.0),
-                  child: Row(
-                    children: [         
-                      IconButton(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                key: AppSuppliesInsertKeys.inputName,
+                controller: _name,
+                decoration: InputDecoration(labelText: "Nome"),
+              ),
+              TextField(
+                key: AppSuppliesInsertKeys.inputPrice,
+                controller: _price,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Preço"),
+              ),
+              TextField(
+                key: AppSuppliesInsertKeys.inputDescription,
+                controller: _description,
+                decoration: InputDecoration(labelText: "Descrição"),
+              ),
+              TextField(
+                key: AppSuppliesInsertKeys.inputQuant,
+                controller: _quant,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Quantidade"),
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(20.0),
+              //   child:
+              //       Image.file(_image, width: 300, height: 200, fit: BoxFit.fill),
+              // ),
+              Center(
+                child: !_fileActive ? Padding(
+                  padding: const EdgeInsets.only(left: 70.0),
+                    child: Row(
+                      children: [         
+                        IconButton(
+                            key: AppSuppliesInsertKeys.buttonAddImage,
+                            onPressed: pickImage, icon: const Icon(Icons.camera)), 
+                            const Text("Selecione uma imagem")
+                      ],
+                    ),
+                  ) : IconButton(
                           key: AppSuppliesInsertKeys.buttonAddImage,
-                          onPressed: pickImage, icon: const Icon(Icons.camera)), 
-                          const Text("Selecione uma imagem")
-                    ],
-                  ),
-                ) : IconButton(
-                        key: AppSuppliesInsertKeys.buttonAddImage,
-                        onPressed: pickImage, icon: const Icon(Icons.camera)),
-              ),
-            _fileActive
-                ? Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Image.file(_image,
-                        width: 300, height: 200, fit: BoxFit.fill),
-                  )
-                  : Text(""),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15),
-                    child: ElevatedButton(
-                        key: AppSuppliesInsertKeys.buttonCancel,
-                        onPressed: () => {Navigator.pop(context)},
-                        child: const Text("Cancelar")),
-                  ),
-                  ElevatedButton(
-                      key: AppSuppliesInsertKeys.buttonUpdate,
-                      onPressed: () => updateSchool(),
-                      child: const Text("Salvar")),
-                ],
-              ),
-            )
-          ],
+                          onPressed: pickImage, icon: const Icon(Icons.camera)),
+                ),
+              _fileActive
+                  ? Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Image.file(_image,
+                          width: 300, height: 200, fit: BoxFit.fill),
+                    )
+                    : Text(""),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: ElevatedButton(
+                          key: AppSuppliesInsertKeys.buttonCancel,
+                          onPressed: () => {Navigator.pop(context)},
+                          child: const Text("Cancelar")),
+                    ),
+                    ElevatedButton(
+                        key: AppSuppliesInsertKeys.buttonUpdate,
+                        onPressed: () => updateSchool(),
+                        child: const Text("Salvar")),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

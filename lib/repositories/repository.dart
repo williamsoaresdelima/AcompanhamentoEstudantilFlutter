@@ -21,8 +21,7 @@ abstract class Repository {
 
   Future<void> update(String id, Map<String, dynamic> data) => db.collection(_collection).doc(id).update(data);
 
-  Future<http.Response> delete(String id) {
-    final uri = Uri.parse("/$_collection/$id.json");
-    return http.delete(uri);
+  Future delete(String id) async {
+    await db.collection(_collection).doc(id).delete();
   }
 }

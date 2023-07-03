@@ -90,16 +90,14 @@ class _SchoolInsertScreenState extends State<SchoolInsertScreen> {
           ));
         }
       });
-      if (error == 0) {
-
-        School newSchoool =
-            School("0", _name.text, [], imagesId, _location.text, users.id);
-        provider.insert(newSchoool);
-        setState(() {
-          provider.schools.add(newSchoool);
-        });
-        Navigator.of(context).pushReplacementNamed(Routes.schoolListScreen, arguments: users);
-      }
+      School newSchoool =
+          School("0", _name.text, [], imagesId, _location.text, users.id);
+      provider.insert(newSchoool);
+      setState(() {
+        provider.schools.add(newSchoool);
+      });
+      Navigator.of(context)
+          .pushReplacementNamed(Routes.schoolListScreen, arguments: users);
     }
 
     return Scaffold(

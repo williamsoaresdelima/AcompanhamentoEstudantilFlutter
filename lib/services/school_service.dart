@@ -38,10 +38,9 @@ class SchoolService {
     }
   }
 
-  Future<List<School>> delete(String Id) async {
+    Future delete(String Id) async {
     try {
-      Response response = await _schoolRepository.delete(Id);
-      return jsonDecode(response.body);
+      await _schoolRepository.delete(Id);
     } catch (err) {
       print(err);
       throw Exception("Problemas ao consultar lista.");

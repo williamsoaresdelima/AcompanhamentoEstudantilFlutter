@@ -67,7 +67,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         var userCreate = await auth.createUserWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
 
-        if (userCreate.user != null && userCreate.credential != null) {
+        if (userCreate.user != null) {
           Users newUser = Users(
               '0',
               _emailController.text,
@@ -117,190 +117,192 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             Colors.lightBlue.shade200,
           ],
         )),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Informações Pessoais',
-                              style: TextStyle(
-                                  fontSize: 25, color: Colors.black87),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Informações Pessoais',
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.black87),
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                              style: const TextStyle(
-                                  height: 1.0, color: Colors.black),
-                              controller: _userNameController,
-                              decoration:
-                                  InputsDecoration.createInputsDecorationText(
-                                      'Nome de Usuário')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                              style: const TextStyle(
-                                  height: 1.0, color: Colors.black),
-                              controller: _fullNameController,
-                              decoration:
-                                  InputsDecoration.createInputsDecorationText(
-                                      'Nome Completo')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                              style: const TextStyle(
-                                  height: 1.0, color: Colors.black),
-                              controller: _enderecoController,
-                              decoration:
-                                  InputsDecoration.createInputsDecorationText(
-                                      'Endereço')),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                                style: const TextStyle(
+                                    height: 1.0, color: Colors.black),
+                                controller: _userNameController,
+                                decoration:
+                                    InputsDecoration.createInputsDecorationText(
+                                        'Nome de Usuário')),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                                style: const TextStyle(
+                                    height: 1.0, color: Colors.black),
+                                controller: _fullNameController,
+                                decoration:
+                                    InputsDecoration.createInputsDecorationText(
+                                        'Nome Completo')),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                                style: const TextStyle(
+                                    height: 1.0, color: Colors.black),
+                                controller: _enderecoController,
+                                decoration:
+                                    InputsDecoration.createInputsDecorationText(
+                                        'Endereço')),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Informações de Usuário',
-                              style: TextStyle(
-                                  fontSize: 25, color: Colors.black87),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Informações de Usuário',
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.black87),
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                              style: const TextStyle(
-                                  height: 1.0, color: Colors.black),
-                              controller: _emailController,
-                              decoration:
-                                  InputsDecoration.createInputsDecorationText(
-                                      'Email')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Indexer(children: [
-                            Indexed(
-                              index: 22,
-                              child: TextField(
-                                  obscureText: _obscurePassword,
-                                  style: const TextStyle(
-                                      height: 1.0, color: Colors.black),
-                                  controller: _passwordController,
-                                  decoration: InputsDecoration
-                                      .createInputsDecorationText('Senha')),
-                            ),
-                            InputsDecoration.createVisibilityPassword(
-                                _visibilityEyePassword,
-                                releasePassword,
-                                9.0,
-                                10.0,
-                                27.0,
-                                27.0)
-                          ]),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Indexer(
-                            children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                                style: const TextStyle(
+                                    height: 1.0, color: Colors.black),
+                                controller: _emailController,
+                                decoration:
+                                    InputsDecoration.createInputsDecorationText(
+                                        'Email')),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Indexer(children: [
                               Indexed(
                                 index: 22,
                                 child: TextField(
-                                    obscureText: _obscureConfirmPassword,
+                                    obscureText: _obscurePassword,
                                     style: const TextStyle(
                                         height: 1.0, color: Colors.black),
-                                    controller: _confirmPasswordController,
+                                    controller: _passwordController,
                                     decoration: InputsDecoration
-                                        .createInputsDecorationText(
-                                            'Confirmar Senha')),
+                                        .createInputsDecorationText('Senha')),
                               ),
                               InputsDecoration.createVisibilityPassword(
-                                  _visibilityEyeConfirmPassword,
-                                  releaseConfirmPassword,
+                                  _visibilityEyePassword,
+                                  releasePassword,
                                   9.0,
                                   10.0,
                                   27.0,
                                   27.0)
-                            ],
+                            ]),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: ListTile(
-                        leading: Checkbox(
-                          checkColor: Colors.white,
-                          value: termsIsChecked,
-                          shape: CircleBorder(),
-                          onChanged: (bool? value) {
-                            setState(() {
-                              termsIsChecked = value!;
-                            });
-                          },
-                        ),
-                        title: Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Column(children: [
-                            Text('Eu aceito'),
-                            Row(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Indexer(
                               children: [
-                                InkResponse(
-                                  onTap: () => {},
-                                  child: const Text(
-                                    'Termos e Política Privacidade',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
+                                Indexed(
+                                  index: 22,
+                                  child: TextField(
+                                      obscureText: _obscureConfirmPassword,
+                                      style: const TextStyle(
+                                          height: 1.0, color: Colors.black),
+                                      controller: _confirmPasswordController,
+                                      decoration: InputsDecoration
+                                          .createInputsDecorationText(
+                                              'Confirmar Senha')),
                                 ),
-                                const Text(' do site')
+                                InputsDecoration.createVisibilityPassword(
+                                    _visibilityEyeConfirmPassword,
+                                    releaseConfirmPassword,
+                                    9.0,
+                                    10.0,
+                                    27.0,
+                                    27.0)
                               ],
                             ),
-                          ]),
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: ElevatedButton(
-                              onPressed: () => {Navigator.pop(context)},
-                              child: const Text("Cancelar")),
-                        ),
-                        ElevatedButton(
-                            onPressed: () => createAccount(),
-                            child: const Text("Salvar")),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                    Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: ListTile(
+                          leading: Checkbox(
+                            checkColor: Colors.white,
+                            value: termsIsChecked,
+                            shape: CircleBorder(),
+                            onChanged: (bool? value) {
+                              setState(() {
+                                termsIsChecked = value!;
+                              });
+                            },
+                          ),
+                          title: Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Column(children: [
+                              Text('Eu aceito'),
+                              Row(
+                                children: [
+                                  InkResponse(
+                                    onTap: () => {},
+                                    child: const Text(
+                                      'Termos e Política Privacidade',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Text(' do site')
+                            ]),
+                          ),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: ElevatedButton(
+                                onPressed: () => {Navigator.pop(context)},
+                                child: const Text("Cancelar")),
+                          ),
+                          ElevatedButton(
+                              onPressed: () => createAccount(),
+                              child: const Text("Salvar")),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

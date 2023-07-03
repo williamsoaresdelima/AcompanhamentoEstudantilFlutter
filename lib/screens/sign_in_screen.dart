@@ -89,12 +89,12 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20, top: 250, right: 20),
+              padding: const EdgeInsets.only(left: 20, top: 150, right: 20),
               child: Column(
                 children: [
                   Center(
                       child: Image.asset(
-                    'images/user.png',
+                    'assets/images/user.png',
                     width: 100,
                     height: 100,
                   )),

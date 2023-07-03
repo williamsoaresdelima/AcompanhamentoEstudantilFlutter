@@ -31,6 +31,18 @@ Faça-se necessário o uso do firebase na aplicação, o desenvolver terá que t
 
 <br/>
 
+## Api Externa
+
+Faça-se o uso da api de Geolocalização do google para converter latitude e longetude em um endereço completo. Sua forma de teste é baseada em aceitar o uso de localização do aparelho, desta forma a aplicação irá utilizar a API externa automaticamente. 
+
+<br/>
+
+## Package
+
+A aplicação usa-se o package desenvolvido para algumas soluções como a Geolocalização e algumas soluções com widgets. Sua forma de teste é baseada na localização como foi demonstrado acima.
+
+<br/>
+
 
 ## Instalação de Dependências
 
