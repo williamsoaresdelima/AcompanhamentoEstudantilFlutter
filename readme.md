@@ -68,11 +68,11 @@ A execução é realizada pelo próprio iniciar da IDE.
 <h3 align="left">Linguagens e recursos para a execução do aplicativo</h3>
 
 <p align="left"> 
-  <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
+  <a target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/flutter/flutter-original.svg" alt="flutter" width="40" height="40"/>
   </a>
 
-  <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
+  <a target="_blank" rel="noreferrer">
     <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/dart/dart-original-wordmark.svg" alt="dart" width="40" height="40"/>
   </a>
 </p>
