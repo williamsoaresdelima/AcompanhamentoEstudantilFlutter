@@ -210,8 +210,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                       .createInputsDecorationText('Senha')),
                             ),
                             InputsDecoration.createVisibilityPassword(
-                                _visibilityEyePassword, releasePassword,
-                                 9.0,10.0,27.0,27.0)
+                                _visibilityEyePassword,
+                                releasePassword,
+                                9.0,
+                                10.0,
+                                27.0,
+                                27.0)
                           ]),
                         ),
                         Padding(
@@ -230,8 +234,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                             'Confirmar Senha')),
                               ),
                               InputsDecoration.createVisibilityPassword(
-                                _visibilityEyeConfirmPassword, releaseConfirmPassword,
-                                9.0,10.0,27.0,27.0)
+                                  _visibilityEyeConfirmPassword,
+                                  releaseConfirmPassword,
+                                  9.0,
+                                  10.0,
+                                  27.0,
+                                  27.0)
                             ],
                           ),
                         ),
@@ -254,9 +262,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         title: Padding(
                           padding: const EdgeInsets.only(top: 15.0),
                           child: Column(children: [
+                            Text('Eu aceito'),
                             Row(
                               children: [
-                                Text('Eu aceito'),
                                 InkResponse(
                                   onTap: () => {},
                                   child: const Text(
@@ -266,9 +274,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                     ),
                                   ),
                                 ),
+                                const Text(' do site')
                               ],
                             ),
-                            const Text('do site')
                           ]),
                         ),
                       )),

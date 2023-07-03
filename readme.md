@@ -20,6 +20,14 @@ fornece nessa primeira versão um app em Flutter e leitura de dados a partir do 
 Recursos necessários para a execução do software.
 - ### [x] Dart
 - ### [x] Flutter
+- ### [x] Firebase
+
+Faça-se necessário o uso do firebase na aplicação, o desenvolver terá que ter uma conta no firebase para conseguir desenvolver e realizar os testes. Soluções utilizadas no mesmo.
+
+- ### [x] Autenticação
+- ### [x] Storage
+- ### [x] Firestore
+
 
 <br/>
 
